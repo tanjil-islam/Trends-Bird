@@ -1,3 +1,4 @@
+import { getImageUrl } from '@/lib/utils';
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
@@ -141,7 +142,7 @@ export default function AttributesPage() {
       return <div className="w-4 h-4 rounded-full border border-[var(--border-color)] inline-block mr-1 align-middle" style={{ backgroundColor: refVal }} title={refVal} />;
     }
     if (type === 'image_swatch') {
-      return <img src={`http://localhost:4000${refVal}`} className="w-5 h-5 rounded object-cover border border-[var(--border-color)] inline-block mr-1 align-middle" alt="swatch" />;
+      return <img src={getImageUrl(refVal)} className="w-5 h-5 rounded object-cover border border-[var(--border-color)] inline-block mr-1 align-middle" alt="swatch" />;
     }
     return null;
   };

@@ -1,3 +1,4 @@
+import { getImageUrl } from '@/lib/utils';
 'use client';
 
 import { useState, useEffect, useCallback, use } from 'react';
@@ -255,7 +256,7 @@ export default function EditProductPage({ params }: { params: Promise<{ id: stri
                      {!m.isThumbnail && <button type="button" onClick={() => setThumbnail(m.mediaId)} className="bg-black/50 text-white text-[10px] px-1 rounded hover:bg-indigo-500">Thumb</button>}
                    </div>
                    <button type="button" onClick={() => removeProductMedia(m.mediaId)} className="absolute top-1 right-1 bg-red-500/80 text-white rounded-full w-4 h-4 flex items-center justify-center text-[10px] z-10 hover:bg-red-500">&times;</button>
-                   <img src={`http://localhost:4000/api/media/${m.mediaId}`} className="w-full h-full object-cover" alt="Media" onError={(e) => { (e.target as HTMLImageElement).src = 'https://placehold.co/100x100?text=Media' }} />
+                   <img src={getImageUrl('/api/media/' + m.mediaId)} className="w-full h-full object-cover" alt="Media" onError={(e) => { (e.target as HTMLImageElement).src = 'https://placehold.co/100x100?text=Media' }} />
                    {form.hasVariants && (
                      <select 
                        value={m.attributeValueId || ''} 
@@ -349,7 +350,7 @@ export default function EditProductPage({ params }: { params: Promise<{ id: stri
                       {(v.media || []).map((m: any) => (
                         <div key={m.mediaId} className="relative w-12 h-12 border rounded overflow-hidden border-[var(--border-color)]">
                           <button type="button" onClick={() => removeVariantMedia(idx, m.mediaId)} className="absolute top-0 right-0 bg-red-500/80 text-white rounded-bl w-4 h-4 flex items-center justify-center text-[8px] z-10 hover:bg-red-500">&times;</button>
-                          <img src={`http://localhost:4000/api/media/${m.mediaId}`} className="w-full h-full object-cover" alt="Media" onError={(e) => { (e.target as HTMLImageElement).src = 'https://placehold.co/50x50?text=Media' }} />
+                          <img src={getImageUrl('/api/media/' + m.mediaId)} className="w-full h-full object-cover" alt="Media" onError={(e) => { (e.target as HTMLImageElement).src = 'https://placehold.co/50x50?text=Media' }} />
                         </div>
                       ))}
                     </div>

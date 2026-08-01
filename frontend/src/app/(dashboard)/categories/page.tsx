@@ -1,3 +1,4 @@
+import { getImageUrl } from '@/lib/utils';
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
@@ -123,7 +124,7 @@ export default function CategoriesPage() {
                   <td>
                     <div className="flex items-center gap-3">
                       {cat.image ? (
-                        <img src={`http://localhost:4000${cat.image.thumbnail || cat.image.publicUrl}`} className="w-10 h-10 rounded object-cover border border-[var(--border-color)]" alt="" />
+                        <img src={getImageUrl(cat.image.thumbnail || cat.image.publicUrl)} className="w-10 h-10 rounded object-cover border border-[var(--border-color)]" alt="" />
                       ) : (
                         <div className="w-10 h-10 rounded bg-[var(--bg-hover)] flex items-center justify-center border border-[var(--border-color)]">📂</div>
                       )}
@@ -166,7 +167,7 @@ export default function CategoriesPage() {
                   <div className="flex items-center gap-3">
                     {selectedMedia ? (
                       <div className="relative">
-                        <img src={`http://localhost:4000${selectedMedia.thumbnail || selectedMedia.publicUrl}`} className="w-16 h-16 rounded object-cover border" alt="" />
+                        <img src={getImageUrl(selectedMedia.thumbnail || selectedMedia.publicUrl)} className="w-16 h-16 rounded object-cover border" alt="" />
                         <button type="button" onClick={() => { setFormData(prev => ({...prev, imageId: ''})); setSelectedMedia(null); }} className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs hover:bg-red-600">×</button>
                       </div>
                     ) : (

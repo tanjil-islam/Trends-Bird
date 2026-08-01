@@ -1,3 +1,4 @@
+import { getImageUrl } from '@/lib/utils';
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
@@ -99,7 +100,7 @@ export default function BrandsPage() {
                   <td>
                     <div className="flex items-center gap-3">
                       {b.logo ? (
-                        <img src={`http://localhost:4000${b.logo.thumbnail || b.logo.publicUrl}`} className="w-10 h-10 rounded object-contain bg-white border border-[var(--border-color)] p-1" alt="" />
+                        <img src={getImageUrl(b.logo.thumbnail || b.logo.publicUrl)} className="w-10 h-10 rounded object-contain bg-white border border-[var(--border-color)] p-1" alt="" />
                       ) : (
                         <div className="w-10 h-10 rounded bg-[var(--bg-hover)] flex items-center justify-center border border-[var(--border-color)] text-xs">No Logo</div>
                       )}
@@ -140,7 +141,7 @@ export default function BrandsPage() {
                   <div className="flex items-center gap-3">
                     {selectedMedia ? (
                       <div className="relative">
-                        <img src={`http://localhost:4000${selectedMedia.thumbnail || selectedMedia.publicUrl}`} className="w-16 h-16 rounded object-contain bg-white border p-1" alt="" />
+                        <img src={getImageUrl(selectedMedia.thumbnail || selectedMedia.publicUrl)} className="w-16 h-16 rounded object-contain bg-white border p-1" alt="" />
                         <button type="button" onClick={() => { setFormData(prev => ({...prev, logoId: ''})); setSelectedMedia(null); }} className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs hover:bg-red-600">×</button>
                       </div>
                     ) : (

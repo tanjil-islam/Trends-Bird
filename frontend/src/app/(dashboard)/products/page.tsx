@@ -1,3 +1,4 @@
+import { getImageUrl } from '@/lib/utils';
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
@@ -71,7 +72,7 @@ export default function ProductsPage() {
                     <td>
                       <div className="flex items-center gap-3">
                         {p.media?.[0]?.media?.thumbnail || p.media?.[0]?.media?.publicUrl ? (
-                          <img src={`http://localhost:4000${p.media[0].media.thumbnail || p.media[0].media.publicUrl}`} className="w-10 h-10 rounded object-cover" alt="" />
+                          <img src={getImageUrl(p.media[0].media.thumbnail || p.media[0].media.publicUrl)} className="w-10 h-10 rounded object-cover" alt="" />
                         ) : (
                           <div className="w-10 h-10 rounded bg-[var(--bg-hover)] flex items-center justify-center">📦</div>
                         )}

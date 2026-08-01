@@ -1,3 +1,4 @@
+import { getImageUrl } from '@/lib/utils';
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
@@ -76,7 +77,7 @@ export default function MediaPage() {
   };
 
   const copyUrl = (url: string) => {
-    navigator.clipboard.writeText(`http://localhost:4000${url}`);
+    navigator.clipboard.writeText(getImageUrl(url));
     alert('URL copied to clipboard!');
   };
 
@@ -104,7 +105,7 @@ export default function MediaPage() {
                 onClick={() => openMedia(m)}
               >
                 {m.type === 'image' ? (
-                  <img src={`http://localhost:4000${m.thumbnail || m.publicUrl}`} alt={m.altText || m.fileName} className="w-full h-32 object-cover rounded-lg" />
+                  <img src={getImageUrl(m.thumbnail || m.publicUrl)} alt={m.altText || m.fileName} className="w-full h-32 object-cover rounded-lg" />
                 ) : (
                   <div className="w-full h-32 rounded-lg bg-[var(--bg-hover)] flex items-center justify-center text-3xl">
                     {m.type === 'video' ? '🎥' : '📄'}
@@ -142,9 +143,9 @@ export default function MediaPage() {
             {/* Media Preview */}
             <div className="flex-1 bg-[var(--bg-secondary)] rounded-xl border border-[var(--border-color)] flex items-center justify-center overflow-hidden min-h-[300px]">
               {selectedMedia.type === 'image' ? (
-                <img src={`http://localhost:4000${selectedMedia.publicUrl}`} alt={selectedMedia.altText} className="max-w-full max-h-[400px] object-contain" />
+                <img src={getImageUrl(selectedMedia.publicUrl)} alt={selectedMedia.altText} className="max-w-full max-h-[400px] object-contain" />
               ) : selectedMedia.type === 'video' ? (
-                <video src={`http://localhost:4000${selectedMedia.publicUrl}`} controls className="max-w-full max-h-[400px]" />
+                <video src={getImageUrl(selectedMedia.publicUrl)} controls className="max-w-full max-h-[400px]" />
               ) : (
                 <div className="text-6xl">📄</div>
               )}

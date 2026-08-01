@@ -1,3 +1,4 @@
+import { getImageUrl } from '@/lib/utils';
 'use client';
 
 import { useState, useEffect } from 'react';
@@ -68,7 +69,7 @@ export default function MediaSelector({ onSelect, onClose, multiple = false, sel
                     className={`relative aspect-square rounded-lg border-2 cursor-pointer overflow-hidden transition-all ${isSelected ? 'border-indigo-500 ring-2 ring-indigo-500/50' : 'border-[var(--border-color)] hover:border-indigo-400/50'}`}
                   >
                     {m.type === 'image' ? (
-                      <img src={`http://localhost:4000${m.thumbnail || m.publicUrl}`} alt={m.fileName} className="w-full h-full object-cover" />
+                      <img src={getImageUrl(m.thumbnail || m.publicUrl)} alt={m.fileName} className="w-full h-full object-cover" />
                     ) : (
                       <div className="w-full h-full flex flex-col items-center justify-center bg-[var(--bg-hover)]">
                         <span className="text-2xl mb-1">📄</span>

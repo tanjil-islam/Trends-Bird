@@ -1,3 +1,4 @@
+import { getImageUrl } from '@/lib/utils';
 'use client';
 
 import { useState, useEffect } from 'react';
@@ -228,7 +229,7 @@ export default function DashboardPage() {
                       <td className="px-5 py-3">
                         <div className="flex items-center gap-3">
                           {p.media?.[0]?.media?.thumbnail || p.media?.[0]?.media?.publicUrl ? (
-                            <img src={`http://localhost:4000${p.media[0].media.thumbnail || p.media[0].media.publicUrl}`} className="w-9 h-9 rounded-md object-cover border border-[var(--border-color)]" alt="" />
+                            <img src={getImageUrl(p.media[0].media.thumbnail || p.media[0].media.publicUrl)} className="w-9 h-9 rounded-md object-cover border border-[var(--border-color)]" alt="" />
                           ) : (
                             <div className="w-9 h-9 rounded-md bg-[var(--bg-primary)] flex items-center justify-center border border-[var(--border-color)] text-[var(--text-tertiary)]">
                               <Package size={14} />

@@ -1,4 +1,9 @@
-import { Injectable, NotFoundException, ConflictException, BadRequestException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  ConflictException,
+  BadRequestException,
+} from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { PaginationDto } from '../common/dto/pagination.dto';
 import sharp from 'sharp';
@@ -64,8 +69,8 @@ export class MediaService {
     const where: any = {};
     if (search) {
       where.OR = [
-        { fileName: { contains: search} },
-        { title: { contains: search} },
+        { fileName: { contains: search } },
+        { title: { contains: search } },
       ];
     }
     if (type) where.type = type;
@@ -112,7 +117,11 @@ export class MediaService {
     });
     if (!media) throw new NotFoundException('Media not found');
 
-    if (media.productMedia.length > 0 || media.categoryImages.length > 0 || media.brandLogos.length > 0) {
+    if (
+      media.productMedia.length > 0 ||
+      media.categoryImages.length > 0 ||
+      media.brandLogos.length > 0
+    ) {
       throw new ConflictException(
         'Cannot delete media: it is in use by products, categories, or brands. Remove references first.',
       );
@@ -125,7 +134,9 @@ export class MediaService {
         const thumbPath = path.join(process.cwd(), media.thumbnail);
         if (fs.existsSync(thumbPath)) fs.unlinkSync(thumbPath);
       }
-    } catch (e) { /* ignore file deletion errors */ }
+    } catch (e) {
+      /* ignore file deletion errors */
+    }
 
     await this.prisma.media.delete({ where: { id } });
     return { message: 'Media deleted successfully' };

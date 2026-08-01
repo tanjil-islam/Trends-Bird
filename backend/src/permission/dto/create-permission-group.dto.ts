@@ -1,4 +1,10 @@
-import { IsString, IsNotEmpty, IsArray, IsOptional, ArrayMinSize } from 'class-validator';
+import {
+  IsString,
+  IsNotEmpty,
+  IsArray,
+  IsOptional,
+  ArrayMinSize,
+} from 'class-validator';
 
 export class CreatePermissionGroupDto {
   @IsString()

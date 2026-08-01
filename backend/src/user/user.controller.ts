@@ -1,4 +1,13 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  Query,
+} from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -41,7 +50,10 @@ export class UserController {
 
   @Delete(':id')
   @RequirePermissions('user:delete')
-  remove(@Param() params: UuidParamDto, @CurrentUser('id') currentUserId: string) {
+  remove(
+    @Param() params: UuidParamDto,
+    @CurrentUser('id') currentUserId: string,
+  ) {
     return this.userService.remove(params.id, currentUserId);
   }
 }

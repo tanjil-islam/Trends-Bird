@@ -1,4 +1,8 @@
-import { Injectable, ConflictException, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  ConflictException,
+  NotFoundException,
+} from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateAttributeDto } from './dto/create-attribute.dto';
 import { UpdateAttributeDto } from './dto/update-attribute.dto';
@@ -10,11 +14,19 @@ export class AttributeService {
   constructor(private readonly prisma: PrismaService) {}
 
   async create(dto: CreateAttributeDto) {
-    const existing = await this.prisma.attribute.findUnique({ where: { name: dto.name } });
-    if (existing) throw new ConflictException(`Attribute '${dto.name}' already exists`);
+    const existing = await this.prisma.attribute.findUnique({
+      where: { name: dto.name },
+    });
+    if (existing)
+      throw new ConflictException(`Attribute '${dto.name}' already exists`);
 
-    const existingSlug = await this.prisma.attribute.findUnique({ where: { slug: dto.slug } });
-    if (existingSlug) throw new ConflictException(`Attribute with slug '${dto.slug}' already exists`);
+    const existingSlug = await this.prisma.attribute.findUnique({
+      where: { slug: dto.slug },
+    });
+    if (existingSlug)
+      throw new ConflictException(
+        `Attribute with slug '${dto.slug}' already exists`,
+      );
 
     const attribute = await this.prisma.attribute.create({
       data: {
@@ -41,9 +53,7 @@ export class AttributeService {
     const { page = 1, limit = 10, search } = query;
     const skip = (page - 1) * limit;
 
-    const where = search
-      ? { name: { contains: search} }
-      : {};
+    const where = search ? { name: { contains: search } } : {};
 
     const [attributes, total] = await Promise.all([
       this.prisma.attribute.findMany({
@@ -75,13 +85,21 @@ export class AttributeService {
     await this.findOne(id);
 
     if (dto.name) {
-      const existing = await this.prisma.attribute.findFirst({ where: { name: dto.name, NOT: { id } } });
-      if (existing) throw new ConflictException(`Attribute '${dto.name}' already exists`);
+      const existing = await this.prisma.attribute.findFirst({
+        where: { name: dto.name, NOT: { id } },
+      });
+      if (existing)
+        throw new ConflictException(`Attribute '${dto.name}' already exists`);
     }
 
     if (dto.slug) {
-      const existing = await this.prisma.attribute.findFirst({ where: { slug: dto.slug, NOT: { id } } });
-      if (existing) throw new ConflictException(`Attribute with slug '${dto.slug}' already exists`);
+      const existing = await this.prisma.attribute.findFirst({
+        where: { slug: dto.slug, NOT: { id } },
+      });
+      if (existing)
+        throw new ConflictException(
+          `Attribute with slug '${dto.slug}' already exists`,
+        );
     }
 
     const updated = await this.prisma.attribute.update({
@@ -104,7 +122,9 @@ export class AttributeService {
     });
     if (!attribute) throw new NotFoundException('Attribute not found');
 
-    const usedValues = attribute.values.filter((v) => v._count.variantValues > 0);
+    const usedValues = attribute.values.filter(
+      (v) => v._count.variantValues > 0,
+    );
     if (usedValues.length > 0) {
       throw new ConflictException(
         `Cannot delete attribute: ${usedValues.length} value(s) are used in product variants.`,
@@ -126,7 +146,10 @@ export class AttributeService {
     const existing = await this.prisma.attributeValue.findFirst({
       where: { attributeId, slug: dto.slug },
     });
-    if (existing) throw new ConflictException(`Value with slug '${dto.slug}' already exists for this attribute`);
+    if (existing)
+      throw new ConflictException(
+        `Value with slug '${dto.slug}' already exists for this attribute`,
+      );
 
     const value = await this.prisma.attributeValue.create({
       data: {

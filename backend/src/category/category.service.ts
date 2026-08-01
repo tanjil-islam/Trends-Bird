@@ -1,4 +1,9 @@
-import { Injectable, ConflictException, NotFoundException, BadRequestException } from '@nestjs/common';
+import {
+  Injectable,
+  ConflictException,
+  NotFoundException,
+  BadRequestException,
+} from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
@@ -9,11 +14,18 @@ export class CategoryService {
   constructor(private readonly prisma: PrismaService) {}
 
   async create(dto: CreateCategoryDto) {
-    const existing = await this.prisma.category.findUnique({ where: { slug: dto.slug } });
-    if (existing) throw new ConflictException(`Category with slug '${dto.slug}' already exists`);
+    const existing = await this.prisma.category.findUnique({
+      where: { slug: dto.slug },
+    });
+    if (existing)
+      throw new ConflictException(
+        `Category with slug '${dto.slug}' already exists`,
+      );
 
     if (dto.parentId) {
-      const parent = await this.prisma.category.findUnique({ where: { id: dto.parentId } });
+      const parent = await this.prisma.category.findUnique({
+        where: { id: dto.parentId },
+      });
       if (!parent) throw new NotFoundException('Parent category not found');
     }
 
@@ -32,8 +44,8 @@ export class CategoryService {
     const where: any = {};
     if (search) {
       where.OR = [
-        { name: { contains: search} },
-        { slug: { contains: search} },
+        { name: { contains: search } },
+        { slug: { contains: search } },
       ];
     }
     // If parentId is 'root', show only top-level categories
@@ -111,7 +123,10 @@ export class CategoryService {
       const existing = await this.prisma.category.findFirst({
         where: { slug: dto.slug, NOT: { id } },
       });
-      if (existing) throw new ConflictException(`Category with slug '${dto.slug}' already exists`);
+      if (existing)
+        throw new ConflictException(
+          `Category with slug '${dto.slug}' already exists`,
+        );
     }
 
     // Cycle detection: ensure the new parentId doesn't create a cycle
@@ -155,7 +170,10 @@ export class CategoryService {
   }
 
   /** Walk up the ancestor chain from targetParentId. If we ever reach `categoryId`, it's a cycle. */
-  private async detectCycle(categoryId: string, targetParentId: string): Promise<void> {
+  private async detectCycle(
+    categoryId: string,
+    targetParentId: string,
+  ): Promise<void> {
     const visited = new Set<string>();
     let currentId: string | null = targetParentId;
 

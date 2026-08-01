@@ -1,4 +1,8 @@
-import { Injectable, UnauthorizedException, ForbiddenException } from '@nestjs/common';
+import {
+  Injectable,
+  UnauthorizedException,
+  ForbiddenException,
+} from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import { PrismaService } from '../prisma/prisma.service';
@@ -33,10 +37,15 @@ export class AuthService {
     }
 
     if (!user.active) {
-      throw new ForbiddenException('Your account has been deactivated. Please contact an administrator.');
+      throw new ForbiddenException(
+        'Your account has been deactivated. Please contact an administrator.',
+      );
     }
 
-    const isPasswordValid = await bcrypt.compare(loginDto.password, user.password);
+    const isPasswordValid = await bcrypt.compare(
+      loginDto.password,
+      user.password,
+    );
     if (!isPasswordValid) {
       throw new UnauthorizedException('Invalid credentials');
     }
@@ -108,7 +117,10 @@ export class AuthService {
     await this.prisma.refreshToken.delete({ where: { id: storedToken.id } });
 
     // Generate new tokens
-    const tokens = await this.generateTokens(storedToken.user.id, storedToken.user.email);
+    const tokens = await this.generateTokens(
+      storedToken.user.id,
+      storedToken.user.email,
+    );
     await this.saveRefreshToken(storedToken.user.id, tokens.refreshToken);
 
     return {
@@ -134,7 +146,10 @@ export class AuthService {
       this.jwtService.signAsync(payload as any),
       this.jwtService.signAsync(payload as any, {
         secret: this.configService.get<string>('JWT_REFRESH_SECRET'),
-        expiresIn: this.configService.get<string>('JWT_REFRESH_EXPIRES_IN', '7d') as any,
+        expiresIn: this.configService.get<string>(
+          'JWT_REFRESH_EXPIRES_IN',
+          '7d',
+        ) as any,
       }),
     ]);
 
@@ -142,7 +157,10 @@ export class AuthService {
   }
 
   private async saveRefreshToken(userId: string, token: string) {
-    const expiresIn = this.configService.get<string>('JWT_REFRESH_EXPIRES_IN', '7d');
+    const expiresIn = this.configService.get<string>(
+      'JWT_REFRESH_EXPIRES_IN',
+      '7d',
+    );
     const expiresAt = new Date();
     // Parse the expiry string (e.g., '7d')
     const match = expiresIn.match(/^(\d+)([dhms])$/);
@@ -150,10 +168,18 @@ export class AuthService {
       const value = parseInt(match[1]);
       const unit = match[2];
       switch (unit) {
-        case 'd': expiresAt.setDate(expiresAt.getDate() + value); break;
-        case 'h': expiresAt.setHours(expiresAt.getHours() + value); break;
-        case 'm': expiresAt.setMinutes(expiresAt.getMinutes() + value); break;
-        case 's': expiresAt.setSeconds(expiresAt.getSeconds() + value); break;
+        case 'd':
+          expiresAt.setDate(expiresAt.getDate() + value);
+          break;
+        case 'h':
+          expiresAt.setHours(expiresAt.getHours() + value);
+          break;
+        case 'm':
+          expiresAt.setMinutes(expiresAt.getMinutes() + value);
+          break;
+        case 's':
+          expiresAt.setSeconds(expiresAt.getSeconds() + value);
+          break;
       }
     } else {
       expiresAt.setDate(expiresAt.getDate() + 7);

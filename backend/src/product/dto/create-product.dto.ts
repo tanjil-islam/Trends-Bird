@@ -1,4 +1,15 @@
-import { IsString, IsNotEmpty, IsOptional, IsBoolean, IsNumber, IsArray, ValidateNested, IsUUID, IsIn, Min } from 'class-validator';
+import {
+  IsString,
+  IsNotEmpty,
+  IsOptional,
+  IsBoolean,
+  IsNumber,
+  IsArray,
+  ValidateNested,
+  IsUUID,
+  IsIn,
+  Min,
+} from 'class-validator';
 import { Type } from 'class-transformer';
 
 export class ProductMediaDto {

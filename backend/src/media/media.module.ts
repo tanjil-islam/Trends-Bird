@@ -20,13 +20,21 @@ import { extname } from 'path';
           },
         }),
         limits: {
-          fileSize: parseInt(configService.get<string>('MAX_FILE_SIZE', '5242880')),
+          fileSize: parseInt(
+            configService.get<string>('MAX_FILE_SIZE', '5242880'),
+          ),
         },
         fileFilter: (req, file, cb) => {
           const allowedMimes = [
-            'image/jpeg', 'image/png', 'image/gif', 'image/webp', 'image/svg+xml',
-            'video/mp4', 'video/webm',
-            'application/pdf', 'application/msword',
+            'image/jpeg',
+            'image/png',
+            'image/gif',
+            'image/webp',
+            'image/svg+xml',
+            'video/mp4',
+            'video/webm',
+            'application/pdf',
+            'application/msword',
             'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
           ];
           if (allowedMimes.includes(file.mimetype)) {

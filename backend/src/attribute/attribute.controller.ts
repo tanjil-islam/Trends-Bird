@@ -1,4 +1,13 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  Query,
+} from '@nestjs/common';
 import { AttributeService } from './attribute.service';
 import { CreateAttributeDto } from './dto/create-attribute.dto';
 import { UpdateAttributeDto } from './dto/update-attribute.dto';
@@ -49,7 +58,10 @@ export class AttributeController {
 
   @Delete(':id/values/:valueId')
   @RequirePermissions('attribute:delete')
-  removeValue(@Param('id') attributeId: string, @Param('valueId') valueId: string) {
+  removeValue(
+    @Param('id') attributeId: string,
+    @Param('valueId') valueId: string,
+  ) {
     return this.attributeService.removeValue(attributeId, valueId);
   }
 }

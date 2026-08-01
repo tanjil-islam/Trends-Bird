@@ -1,4 +1,8 @@
-import { Injectable, ConflictException, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  ConflictException,
+  NotFoundException,
+} from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateBrandDto } from './dto/create-brand.dto';
 import { UpdateBrandDto } from './dto/update-brand.dto';
@@ -9,11 +13,19 @@ export class BrandService {
   constructor(private readonly prisma: PrismaService) {}
 
   async create(dto: CreateBrandDto) {
-    const existingName = await this.prisma.brand.findUnique({ where: { name: dto.name } });
-    if (existingName) throw new ConflictException(`Brand '${dto.name}' already exists`);
+    const existingName = await this.prisma.brand.findUnique({
+      where: { name: dto.name },
+    });
+    if (existingName)
+      throw new ConflictException(`Brand '${dto.name}' already exists`);
 
-    const existingSlug = await this.prisma.brand.findUnique({ where: { slug: dto.slug } });
-    if (existingSlug) throw new ConflictException(`Brand with slug '${dto.slug}' already exists`);
+    const existingSlug = await this.prisma.brand.findUnique({
+      where: { slug: dto.slug },
+    });
+    if (existingSlug)
+      throw new ConflictException(
+        `Brand with slug '${dto.slug}' already exists`,
+      );
 
     const brand = await this.prisma.brand.create({
       data: dto,
@@ -29,10 +41,7 @@ export class BrandService {
 
     const where = search
       ? {
-          OR: [
-            { name: { contains: search} },
-            { slug: { contains: search} },
-          ],
+          OR: [{ name: { contains: search } }, { slug: { contains: search } }],
         }
       : {};
 
@@ -72,13 +81,21 @@ export class BrandService {
     await this.findOne(id);
 
     if (dto.name) {
-      const existing = await this.prisma.brand.findFirst({ where: { name: dto.name, NOT: { id } } });
-      if (existing) throw new ConflictException(`Brand '${dto.name}' already exists`);
+      const existing = await this.prisma.brand.findFirst({
+        where: { name: dto.name, NOT: { id } },
+      });
+      if (existing)
+        throw new ConflictException(`Brand '${dto.name}' already exists`);
     }
 
     if (dto.slug) {
-      const existing = await this.prisma.brand.findFirst({ where: { slug: dto.slug, NOT: { id } } });
-      if (existing) throw new ConflictException(`Brand with slug '${dto.slug}' already exists`);
+      const existing = await this.prisma.brand.findFirst({
+        where: { slug: dto.slug, NOT: { id } },
+      });
+      if (existing)
+        throw new ConflictException(
+          `Brand with slug '${dto.slug}' already exists`,
+        );
     }
 
     const updated = await this.prisma.brand.update({

@@ -1,4 +1,15 @@
-import { IsString, IsOptional, IsBoolean, IsNumber, IsArray, ValidateNested, IsUUID, IsIn, Min, ValidateIf } from 'class-validator';
+import {
+  IsString,
+  IsOptional,
+  IsBoolean,
+  IsNumber,
+  IsArray,
+  ValidateNested,
+  IsUUID,
+  IsIn,
+  Min,
+  ValidateIf,
+} from 'class-validator';
 import { Type } from 'class-transformer';
 import { ProductMediaDto, CreateVariantDto } from './create-product.dto';
 

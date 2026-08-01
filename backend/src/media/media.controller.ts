@@ -1,5 +1,16 @@
 import 'multer';
-import { Controller, Get, Post, Patch, Param, Delete, Query, UseInterceptors, UploadedFile, Body } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Patch,
+  Param,
+  Delete,
+  Query,
+  UseInterceptors,
+  UploadedFile,
+  Body,
+} from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { MediaService } from './media.service';
 import { UpdateMediaDto } from './dto/update-media.dto';

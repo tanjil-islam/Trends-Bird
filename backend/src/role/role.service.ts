@@ -1,4 +1,9 @@
-import { Injectable, ConflictException, NotFoundException, BadRequestException } from '@nestjs/common';
+import {
+  Injectable,
+  ConflictException,
+  NotFoundException,
+  BadRequestException,
+} from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateRoleDto } from './dto/create-role.dto';
 import { UpdateRoleDto } from './dto/update-role.dto';
@@ -9,8 +14,11 @@ export class RoleService {
   constructor(private readonly prisma: PrismaService) {}
 
   async create(dto: CreateRoleDto) {
-    const existing = await this.prisma.role.findUnique({ where: { name: dto.name } });
-    if (existing) throw new ConflictException(`Role '${dto.name}' already exists`);
+    const existing = await this.prisma.role.findUnique({
+      where: { name: dto.name },
+    });
+    if (existing)
+      throw new ConflictException(`Role '${dto.name}' already exists`);
 
     const role = await this.prisma.role.create({
       data: {
@@ -38,9 +46,7 @@ export class RoleService {
     const { page = 1, limit = 10, search } = query;
     const skip = (page - 1) * limit;
 
-    const where = search
-      ? { name: { contains: search} }
-      : {};
+    const where = search ? { name: { contains: search } } : {};
 
     const [roles, total] = await Promise.all([
       this.prisma.role.findMany({
@@ -84,7 +90,9 @@ export class RoleService {
       });
 
       if (roleUpdatePermission) {
-        const willKeepRoleUpdate = dto.permissionIds.includes(roleUpdatePermission.id);
+        const willKeepRoleUpdate = dto.permissionIds.includes(
+          roleUpdatePermission.id,
+        );
         if (!willKeepRoleUpdate) {
           // Check if this is the only role with role:update
           const rolesWithRoleUpdate = await this.prisma.rolePermission.count({
@@ -119,7 +127,9 @@ export class RoleService {
         where: { id },
         data: {
           ...(dto.name !== undefined && { name: dto.name }),
-          ...(dto.description !== undefined && { description: dto.description }),
+          ...(dto.description !== undefined && {
+            description: dto.description,
+          }),
           ...(dto.status !== undefined && { status: dto.status }),
         },
         include: {

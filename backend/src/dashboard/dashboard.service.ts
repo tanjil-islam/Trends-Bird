@@ -58,7 +58,7 @@ export class DashboardService {
       { name: 'Out of Stock', value: outOfStockProducts },
     ];
 
-    const categoryDistribution = topCategoriesData.map(c => ({
+    const categoryDistribution = topCategoriesData.map((c) => ({
       name: c.name,
       products: c._count.products,
     }));

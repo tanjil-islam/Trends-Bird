@@ -1,4 +1,9 @@
-import { Injectable, ConflictException, NotFoundException, BadRequestException } from '@nestjs/common';
+import {
+  Injectable,
+  ConflictException,
+  NotFoundException,
+  BadRequestException,
+} from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreatePermissionGroupDto } from './dto/create-permission-group.dto';
 import { UpdatePermissionGroupDto } from './dto/update-permission-group.dto';
@@ -10,12 +15,14 @@ export class PermissionService {
 
   async createGroup(dto: CreatePermissionGroupDto) {
     const normalizedName = dto.name.trim().toLowerCase().replace(/\s+/g, '_');
-    
+
     const existing = await this.prisma.permissionGroup.findUnique({
       where: { name: normalizedName },
     });
     if (existing) {
-      throw new ConflictException(`Permission group '${normalizedName}' already exists`);
+      throw new ConflictException(
+        `Permission group '${normalizedName}' already exists`,
+      );
     }
 
     // Create group with all associated permissions in a transaction
@@ -29,7 +36,10 @@ export class PermissionService {
 
       const permissions: any[] = [];
       for (const action of dto.actions) {
-        const normalizedAction = action.trim().toLowerCase().replace(/\s+/g, '_');
+        const normalizedAction = action
+          .trim()
+          .toLowerCase()
+          .replace(/\s+/g, '_');
         const permissionName = `${normalizedName}:${normalizedAction}`;
 
         const perm = await tx.permission.create({
@@ -52,9 +62,7 @@ export class PermissionService {
     const { page = 1, limit = 10, search } = query;
     const skip = (page - 1) * limit;
 
-    const where = search
-      ? { name: { contains: search} }
-      : {};
+    const where = search ? { name: { contains: search } } : {};
 
     const [groups, total] = await Promise.all([
       this.prisma.permissionGroup.findMany({
@@ -100,9 +108,14 @@ export class PermissionService {
 
       if (dto.addActions && dto.addActions.length > 0) {
         for (const action of dto.addActions) {
-          const normalizedAction = action.trim().toLowerCase().replace(/\s+/g, '_');
+          const normalizedAction = action
+            .trim()
+            .toLowerCase()
+            .replace(/\s+/g, '_');
           const permName = `${group.name}:${normalizedAction}`;
-          const exists = await tx.permission.findUnique({ where: { name: permName } });
+          const exists = await tx.permission.findUnique({
+            where: { name: permName },
+          });
           if (!exists) {
             await tx.permission.create({
               data: {
@@ -117,14 +130,17 @@ export class PermissionService {
 
       if (dto.removeActions && dto.removeActions.length > 0) {
         for (const action of dto.removeActions) {
-          const normalizedAction = action.trim().toLowerCase().replace(/\s+/g, '_');
+          const normalizedAction = action
+            .trim()
+            .toLowerCase()
+            .replace(/\s+/g, '_');
           const permName = `${group.name}:${normalizedAction}`;
-          
+
           const perm = await tx.permission.findUnique({
             where: { name: permName },
             include: { roles: true },
           });
-          
+
           if (perm) {
             if (perm.roles.length > 0) {
               throw new BadRequestException(
